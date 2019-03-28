@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 
 import RecipeItem from './RecipeItem';
 import recipes from "./../sample_data/recipes.json";
 
 export default class RecipeContainer extends Component {
-    getSearchStringPrepared = () => this.props.searchString
-        .replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
+    getSearchStringPrepared = () => _.escapeRegExp(this.props.searchString);
 
     onRecipeFilter = oRecipe => {
         let pattern = new RegExp(this.getSearchStringPrepared(), 'gi');
@@ -16,7 +16,7 @@ export default class RecipeContainer extends Component {
         <RecipeItem
             key={oRecipe.title}
             oRecipe={oRecipe}
-            searchString={this.props.searchString}/>;
+            searchString={this.getSearchStringPrepared()}/>;
 
     render() {
         let aFiltered = recipes.results
